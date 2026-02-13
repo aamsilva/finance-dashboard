@@ -42,6 +42,7 @@
 
         <div class="nav-links">
             <a href="timeline.html">📅 Ver Todos os Movimentos</a>
+            <a href="travel_detector.html">🌍 Travel Detector (5 viagens)</a>
             <a href="drilldown_despesas_fixas_2026-02.html">⚡ Ver Fev/26 (Eletricidade €178)</a>
         </div>
 
@@ -150,7 +151,62 @@
             </div>
         </div>
 
-        <p class="last-update">Dashboard V9 - Todos os Meses | Última atualização: <span id="timestamp"></span></p>
+        <!-- NOVAS CATEGORIAS -->
+        <div class="grid">
+            <!-- SUPERMERCADO -->
+            <div class="card">
+                <h2>🛒 Supermercado</h2>
+                <div class="summary-box">
+                    <strong>Média:</strong> €45/mês | <strong>Lojas:</strong> Lidl, Aldi, Continente
+                </div>
+                <div class="month-row" style="font-weight: bold; background: #f5f5f5;">
+                    <span class="month-name">Mês</span>
+                    <span class="month-value">Valor</span>
+                    <span class="month-bar">Visual</span>
+                    <span class="month-dev">%</span>
+                    <span class="month-status">⚠️</span>
+                    <span class="month-drill">Ver</span>
+                </div>
+                <div class="month-row"><span class="month-name">Out/25</span><span class="month-value">€127</span><span class="month-bar"><span class="month-bar-fill" style="width: 85%"></span></span><span class="month-dev">+12%</span><span class="month-status">🟢</span><span class="month-drill"><a href="drilldown_supermercado_2025-10.html">🔍</a></span></div>
+                <div class="month-row"><span class="month-name">Nov/25</span><span class="month-value">€98</span><span class="month-bar"><span class="month-bar-fill" style="width: 65%"></span></span><span class="month-dev">-8%</span><span class="month-status">🟢</span><span class="month-drill"><a href="drilldown_supermercado_2025-11.html">🔍</a></span></div>
+                <div class="month-row"><span class="month-name">Dez/25</span><span class="month-value">€156</span><span class="month-bar"><span class="month-bar-fill" style="width: 100%"></span></span><span class="month-dev trend-up">+25%</span><span class="month-status">🟡</span><span class="month-drill"><a href="drilldown_supermercado_2025-12.html">🔍</a></span></div>
+                <div class="month-row"><span class="month-name">Jan/26</span><span class="month-value">€89</span><span class="month-bar"><span class="month-bar-fill" style="width: 57%"></span></span><span class="month-dev">-15%</span><span class="month-status">🟢</span><span class="month-drill"><a href="drilldown_supermercado_2026-01.html">🔍</a></span></div>
+                <div class="month-row"><span class="month-name">Fev/26</span><span class="month-value">-</span><span class="month-bar"><span class="month-bar-fill" style="width: 0%"></span></span><span class="month-dev">-</span><span class="month-status">⚪</span><span class="month-drill"><a href="drilldown_supermercado_2026-02.html">🔍</a></span></div>
+            </div>
+
+            <!-- VIAGENS RESUMO -->
+            <div class="card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+                <h2 style="color: white; border-bottom-color: rgba(255,255,255,0.3);">✈️ Viagens (Travel Detector)</h2>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                    <strong>Total 2025-2026:</strong> €3,005 | <strong>5 Viagens</strong> | <strong>47 transações</strong>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5em;">✈️</div>
+                        <div style="font-size: 0.8em; opacity: 0.9;">Voos</div>
+                        <div style="font-weight: bold;">€1,422</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5em;">🏨</div>
+                        <div style="font-size: 0.8em; opacity: 0.9;">Hoteis</div>
+                        <div style="font-weight: bold;">€705</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5em;">🚕</div>
+                        <div style="font-size: 0.8em; opacity: 0.9;">Transporte</div>
+                        <div style="font-weight: bold;">€332</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.15); padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 1.5em;">🍽️</div>
+                        <div style="font-size: 0.8em; opacity: 0.9;">Refeições</div>
+                        <div style="font-weight: bold;">€557</div>
+                    </div>
+                </div>
+                <a href="travel_detector.html" style="display: block; background: white; color: #11998e; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: bold;">🌍 Ver Detalhes das Viagens</a>
+            </div>
+        </div>
+
+        <p class="last-update">Dashboard V10 - Com Travel Detector | Última atualização: <span id="timestamp"></span></p>
     </div>
     <script>
         document.getElementById('timestamp').textContent = new Date().toLocaleString('pt-PT');
