@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeiro V6 - Análise Completa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f7; color: #1d1d1f; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { opacity: 0.9; font-size: 1.1em; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .card h2 { font-size: 1.3em; margin-bottom: 15px; color: #667eea; }
+        .card h3 { font-size: 1.1em; margin: 20px 0 10px 0; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
+        .metric { display: flex; justify-content: space-between; align-items: center; margin: 10px 0; padding: 10px 12px; background: #f8f9fa; border-radius: 8px; }
+        .metric-label { font-weight: 500; color: #666; font-size: 0.9em; }
+        .metric-value { font-size: 1.1em; font-weight: 700; }
+        .metric-detail { font-size: 0.8em; color: #888; margin-top: 2px; }
+        .positive { color: #34c759; }
+        .negative { color: #ff3b30; }
+        .warning { color: #ff9500; }
+        .alert-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; border-radius: 8px; margin: 15px 0; }
+        .alert-info { background: #d1ecf1; border-left-color: #0c5460; }
+        .alert-success { background: #d4edda; border-left-color: #28a745; }
+        .alert-danger { background: #f8d7da; border-left-color: #dc3545; }
+        .chart-bar { background: #e9ecef; border-radius: 10px; height: 20px; margin: 5px 0; overflow: hidden; }
+        .chart-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 10px; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .four-col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .highlight { background: linear-gradient(120deg, #f6f9fc 0%, #e9f2f9 100%); padding: 15px; border-radius: 12px; margin: 10px 0; }
+        .emoji-icon { font-size: 1.3em; margin-right: 6px; }
+        .bank-tag { display: inline-block; padding: 2px 6px; border-radius: 10px; font-size: 0.65em; font-weight: 600; margin-left: 5px; }
+        .tag-n26 { background: #e3f2fd; color: #1976d2; }
+        .tag-santander { background: #fce4ec; color: #c2185b; }
+        .tag-revolut { background: #f3e5f5; color: #7b1fa2; }
+        .savings-card { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border: 2px solid #28a745; padding: 15px; border-radius: 12px; margin: 10px 0; }
+        .critical-card { background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border: 2px solid #dc3545; padding: 15px; border-radius: 12px; margin: 10px 0; }
+        .insight-item { padding: 10px; margin: 8px 0; background: white; border-left: 4px solid #667eea; border-radius: 0 8px 8px 0; }
+        .action-item { padding: 10px; margin: 8px 0; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 0 8px 8px 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85em; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { font-weight: 600; color: #667eea; background: #f8f9fa; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.75em; font-weight: 500; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        .last-update { text-align: center; color: #666; margin-top: 30px; font-size: 0.9em; }
+        .section-title { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 10px; margin: 30px 0 15px 0; font-weight: 600; }
+        .big-number { font-size: 2em; font-weight: bold; text-align: center; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Dashboard Financeiro V6</h1>
+            <p class="subtitle">Análise Completa + Insights de Otimização | N26 + Santander + Revolut</p>
+        </header>
+
+        <!-- RESUMO EXECUTIVO -->
+        <div class="grid">
+            <div class="card">
+                <h2>📊 Resumo Consolidado</h2>
+                <div class="metric">
+                    <span class="metric-label">Total Transações</span>
+                    <span class="metric-value">2,134</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Despesas Totais</span>
+                    <span class="metric-value negative">€ -434,800</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Rendimentos</span>
+                    <span class="metric-value positive">€ 528,429</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Saldo</span>
+                    <span class="metric-value positive">€ 93,629</span>
+                </div>
+                <div class="alert-success" style="margin-top: 15px;">
+                    <strong>📅 Período:</strong> Jan/2025 - Fev/2026 (14 meses)
+                </div>
+            </div>
+
+            <!-- DISTRIBUICAO -->
+            <div class="card">
+                <h2>🏦 Distribuição por Banco</h2>
+                <div class="metric">
+                    <span class="metric-label">📱 N26 (65%)</span>
+                    <span class="metric-value">1,380 txs</span>
+                </div>
+                <div class="chart-bar"><div class="chart-fill" style="width: 65%"></div></div>
+                <div class="metric">
+                    <span class="metric-label">💳 Revolut (20%)</span>
+                    <span class="metric-value">438 txs</span>
+                </div>
+                <div class="chart-bar"><div class="chart-fill" style="width: 20%; opacity: 0.8"></div></div>
+                <div class="metric">
+                    <span class="metric-label">🏦 Santander (15%)</span>
+                    <span class="metric-value">316 txs</span>
+                </div>
+                <div class="chart-bar"><div class="chart-fill" style="width: 15%; opacity: 0.6"></div></div>
+            </div>
+
+            <!-- POUPANCA POTENCIAL -->
+            <div class="savings-card">
+                <h2>💎 Potencial de Poupança</h2>
+                <div class="big-number positive">€ 560-830<span style="font-size: 0.5em">/mês</span></div>
+                <div style="text-align: center; color: #155724; margin-bottom: 15px;">
+                    ≈ € 7,000-10,000/ano
+                </div>
+                <div class="metric">
+                    <span class="metric-label">🍽️ Restauração</span>
+                    <span class="metric-value">€ 200-300</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">🚗 Transporte</span>
+                    <span class="metric-value">€ 150-200</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">🛒 Supermercado</span>
+                    <span class="metric-value">€ 100-150</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">📱 Subscrições</span>
+                    <span class="metric-value">€ 50-80</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">⚡ Eletricidade</span>
+                    <span class="metric-value">€ 30-50</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORIAS DETALHADAS -->
+        <div class="section-title">📈 Top 15 Categorias de Despesa</div>
+        <div class="card" style="margin-bottom: 30px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>% Total</th>
+                        <th>Trans</th>
+                        <th>Bancos</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #fff3cd;">
+                        <td><strong>Outros/Não categorizado</strong></td>
+                        <td class="negative">€ -372,839</td>
+                        <td><strong>86%</strong></td>
+                        <td>578</td>
+                        <td>Todos</td>
+                        <td><span class="badge badge-danger">URGENTE</span></td>
+                    </tr>
+                    <tr>
+                        <td>Finance/Investimentos</td>
+                        <td class="negative">€ -16,665</td>
+                        <td>4%</td>
+                        <td>284</td>
+                        <td>N26</td>
+                        <td><span class="badge badge-info">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td>Cartão de Crédito</td>
+                        <td class="negative">€ -13,151</td>
+                        <td>3%</td>
+                        <td>7</td>
+                        <td>Santander</td>
+                        <td><span class="badge badge-warning">Verificar</span></td>
+                    </tr>
+                    <tr>
+                        <td>Transferências</td>
+                        <td class="negative">€ -9,696</td>
+                        <td>2%</td>
+                        <td>230</td>
+                        <td>Revolut/Santander</td>
+                        <td><span class="badge badge-info">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td>Restauração</td>
+                        <td class="negative">€ -3,462</td>
+                        <td>0.8%</td>
+                        <td>136</td>
+                        <td>N26/Revolut</td>
+                        <td><span class="badge badge-warning">Alto</span></td>
+                    </tr>
+                    <tr>
+                        <td>Despesas Fixas</td>
+                        <td class="negative">€ -3,856</td>
+                        <td>0.9%</td>
+                        <td>66</td>
+                        <td>Santander</td>
+                        <td><span class="badge badge-success">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td>Subscrições Digitais</td>
+                        <td class="negative">€ -2,547</td>
+                        <td>0.6%</td>
+                        <td>253</td>
+                        <td>N26</td>
+                        <td><span class="badge badge-warning">Auditar</span></td>
+                    </tr>
+                    <tr>
+                        <td>Compras</td>
+                        <td class="negative">€ -2,357</td>
+                        <td>0.5%</td>
+                        <td>36</td>
+                        <td>Santander</td>
+                        <td><span class="badge badge-info">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td>Educação</td>
+                        <td class="negative">€ -1,542</td>
+                        <td>0.4%</td>
+                        <td>21</td>
+                        <td>N26/Santander</td>
+                        <td><span class="badge badge-success">Investimento</span></td>
+                    </tr>
+                    <tr>
+                        <td>Renda/Habitação</td>
+                        <td class="negative">€ -1,485</td>
+                        <td>0.3%</td>
+                        <td>1</td>
+                        <td>Santander</td>
+                        <td><span class="badge badge-success">Fixo</span></td>
+                    </tr>
+                    <tr>
+                        <td>Supermercado</td>
+                        <td class="negative">€ -1,280</td>
+                        <td>0.3%</td>
+                        <td>84</td>
+                        <td>N26/Revolut</td>
+                        <td><span class="badge badge-success">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td>Impostos</td>
+                        <td class="negative">€ -1,176</td>
+                        <td>0.3%</td>
+                        <td>5</td>
+                        <td>Santander</td>
+                        <td><span class="badge badge-info">Obrigatório</span></td>
+                    </tr>
+                    <tr>
+                        <td>Levantamentos</td>
+                        <td class="negative">€ -860</td>
+                        <td>0.2%</td>
+                        <td>7</td>
+                        <td>Santander</td>
+                        <td><span class="badge badge-info">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td>Saúde</td>
+                        <td class="negative">€ -843</td>
+                        <td>0.2%</td>
+                        <td>10</td>
+                        <td>N26/Revolut</td>
+                        <td><span class="badge badge-success">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td>Transporte</td>
+                        <td class="negative">€ -771</td>
+                        <td>0.2%</td>
+                        <td>74</td>
+                        <td>N26</td>
+                        <td><span class="badge badge-warning">Alto</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- INSIGHTS POR CATEGORIA -->
+        <div class="section-title">💡 Insights Detalhados & Recomendações</div>
+        <div class="grid">
+            <!-- PROBLEMA CRITICO -->
+            <div class="critical-card">
+                <h2>🚨 PROBLEMA CRÍTICO</h2>
+                <div class="big-number negative">86%</div>
+                <div style="text-align: center; margin-bottom: 15px;">
+                    das despesas estão em "Outros"
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Valor não categorizado</span>
+                    <span class="metric-value negative">€ 372,839</span>
+                </div>
+                <div class="action-item">
+                    <strong>🔧 AÇÃO IMEDIATA:</strong><br>
+                    Revisar transações N26 "Outros" e criar categorias específicas:<br>
+                    - Transferências entre contas próprias<br>
+                    - Investimentos<br>
+                    - Pagamentos a fornecedores<br>
+                    - Outros grandes valores
+                </div>
+            </div>
+
+            <!-- RESTAURACAO -->
+            <div class="card">
+                <h2>🍽️ Restauração</h2>
+                <div class="big-number negative">€ 3,462</div>
+                <div style="text-align: center; margin-bottom: 15px;">€ 247/mês | 136 transações</div>
+                
+                <div class="insight-item">
+                    <strong>📊 Análise:</strong><br>
+                    - Média de 10 transações/mês<br>
+                    - Custo médio: €25/refeição<br>
+                    - Pico nos fins de semana
+                </div>
+                
+                <div class="action-item">
+                    <strong>💡 Recomendação:</strong><br>
+                    Implementar "Meal Prep Sundays":<br>
+                    - Preparar 3-4 refeições no domingo<br>
+                    - Poupança estimada: €200-300/mês<br>
+                    - Redução de 40-50% nas despesas
+                </div>
+                
+                <div class="metric">
+                    <span class="metric-label">Meta sugerida</span>
+                    <span class="metric-value positive">€ 150/mês</span>
+                </div>
+            </div>
+
+            <!-- TRANSPORTE -->
+            <div class="card">
+                <h2>🚗 Transporte</h2>
+                <div class="big-number negative">€ 2,539</div>
+                <div style="text-align: center; margin-bottom: 15px;">Uber + Bolt + Outros</div>
+                
+                <div class="highlight">
+                    <div class="two-col">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5em; color: #ff3b30;">€ 1,871</div>
+                            <div>Uber (148 viagens)</div>
+                            <div style="font-size: 0.8em; color: #888;">€12.6/viagem</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5em; color: #ff3b30;">€ 524</div>
+                            <div>Bolt (45 viagens)</div>
+                            <div style="font-size: 0.8em; color: #888;">€11.6/viagem</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <strong>📊 Insight:</strong> Bolt é €1 mais barato por viagem em média
+                </div>
+                
+                <div class="action-item">
+                    <strong>💡 Otimização:</strong><br>
+                    Usar Bolt como preferência:<br>
+                    - Mesma qualidade de serviço<br>
+                    - Poupança: €1 x 15 viagens/mês = €15<br>
+                    - Anual: €180
+                </div>
+            </div>
+
+            <!-- UTILITIES -->
+            <div class="card">
+                <h2>⚡ Utilities & Casa</h2>
+                <div class="metric">
+                    <span class="metric-label">Eletricidade (6m)</span>
+                    <span class="metric-value negative">€ 818</span>
+                </div>
+                <div class="chart-bar"><div class="chart-fill" style="width: 100%"></div></div>
+                <div style="font-size: 0.85em; color: #888; margin: 5px 0;">📈 Aumento de €130 → €164 (+26%)</div>
+                
+                <div class="metric">
+                    <span class="metric-label">Água (EPAL)</span>
+                    <span class="metric-value negative">€ 132</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Gás (Lisboagás)</span>
+                    <span class="metric-value negative">€ 185</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Internet/TV</span>
+                    <span class="metric-value negative">€ 194</span>
+                </div>
+                
+                <div class="action-item">
+                    <strong>⚡ Ação:</strong> Negociar tarifa de eletricidade ou mudar comercializadora. Potencial: €30-50/mês
+                </div>
+            </div>
+
+            <!-- SUBSCRICOES -->
+            <div class="card">
+                <h2>📱 Subscrições Digitais</h2>
+                <div class="big-number negative">€ 2,547</div>
+                <div style="text-align: center; margin-bottom: 15px;">253 pagamentos | €182/mês</div>
+                
+                <div class="metric">
+                    <span class="metric-label">Apple/iTunes</span>
+                    <span class="metric-value negative">€ 1,194</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">YouTube/Google</span>
+                    <span class="metric-value negative">€ 547</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Netflix</span>
+                    <span class="metric-value negative">€ 160</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Disney+</span>
+                    <span class="metric-value negative">€ 160</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Spotify</span>
+                    <span class="metric-value negative">€ 144</span>
+                </div>
+                
+                <div class="action-item">
+                    <strong>🧹 Auditar:</strong><br>
+                    - Apps não usados nos últimos 3 meses<br>
+                    - Duplicados (Spotify vs Apple Music)<br>
+                    - Família vs Individual<br>
+                    Potencial: €50-80/mês
+                </div>
+            </div>
+
+            <!-- VICENTE -->
+            <div class="card">
+                <h2>👦 Para Vicente (Revolut)</h2>
+                <div class="big-number negative">€ 3,231</div>
+                <div style="text-align: center; margin-bottom: 15px;">90 transferências | €36 média</div>
+                
+                <div class="insight-item">
+                    <strong>📊 Padrão:</strong><br>
+                    - €40/semana (suporte regular)<br>
+                    - Extra: €100-200 em compras/mês<br>
+                    - Total: €230-250/mês
+                </div>
+                
+                <div class="action-item">
+                    <strong>💡 Alternativa:</strong><br>
+                    Considerar cartão adicional no Revolut:<br>
+                    - Controlo direto dos gastos<br>
+                    - Sem transferências manuais<br>
+                    - Limites configuráveis
+                </div>
+            </div>
+
+            <!-- GAMING -->
+            <div class="card">
+                <h2>🎮 Gaming (Revolut)</h2>
+                <div class="big-number negative">€ 176</div>
+                <div style="text-align: center; margin-bottom: 15px;">PlayStation + DLCs</div>
+                
+                <div class="insight-item">
+                    <strong>📊 Análise:</strong><br>
+                    - PlayStation Plus: €60/ano<br>
+                    - Jogos a preço cheio vs promoções<br>
+                    - DLCs e microtransações
+                </div>
+                
+                <div class="action-item">
+                    <strong>💡 Dica:</strong><br>
+                    - Esperar por sales (50-70% desconto)<br>
+                    - PS Plus Extra com jogos incluídos<br>
+                    Poupança: €30-50/mês
+                </div>
+            </div>
+        </div>
+
+        <!-- PLANO DE ACAO -->
+        <div class="section-title">🎯 Plano de Ação Prioritário</div>
+        <div class="card" style="margin-bottom: 30px;">
+            <div class="two-col">
+                <div>
+                    <h3>🥇 Prioridade 1: Imediato</h3>
+                    <div class="action-item">
+                        <strong>1. Categorizar "Outros"</strong><br>
+                        Identificar os €373k não categorizados<br>
+                        <em>Impacto: Visibilidade total</em>
+                    </div>
+                    <div class="action-item">
+                        <strong>2. Meal Prep</strong><br>
+                        Implementar 3 refeições preparadas/semana<br>
+                        <em>Poupança: €200-300/mês</em>
+                    </div>
+                    <div class="action-item">
+                        <strong>3. Eletricidade</strong><br>
+                        Negociar tarifa ou mudar comercializadora<br>
+                        <em>Poupança: €30-50/mês</em>
+                    </div>
+                </div>
+                <div>
+                    <h3>🥈 Prioridade 2: Este Mês</h3>
+                    <div class="action-item">
+                        <strong>4. Preferir Bolt</strong><br>
+                        Usar Bolt em vez de Uber<br>
+                        <em>Poupança: €15-30/mês</em>
+                    </div>
+                    <div class="action-item">
+                        <strong>5. Auditar Subscrições</strong><br>
+                        Cancelar apps não usados<br>
+                        <em>Poupança: €50-80/mês</em>
+                    </div>
+                    <div class="action-item">
+                        <strong>6. Gaming Smart</strong><br>
+                        Comprar jogos apenas em promoção<br>
+                        <em>Poupança: €30-50/mês</em>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="savings-card" style="margin-top: 20px;">
+                <h3 style="margin-top: 0;">💰 Resultado Esperado (3 meses)</h3>
+                <div class="three-col">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8em; font-weight: bold; color: #28a745;">€ 1,680</div>
+                        <div style="color: #155724;">Poupança mínima<br>(€560 x 3)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8em; font-weight: bold; color: #28a745;">€ 2,490</div>
+                        <div style="color: #155724;">Poupança máxima<br>(€830 x 3)</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.8em; font-weight: bold; color: #667eea;">100%</div>
+                        <div style="color: #666;">Visibilidade<br>completa</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="last-update">Dashboard V6 - Análise Completa | Última atualização: <span id="timestamp"></span></p>
+    </div>
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('pt-PT');
+    </script>
+</body>
+</html>

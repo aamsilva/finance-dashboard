@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard V7 - Análise por Rubrica com Tendências</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f7; color: #1d1d1f; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { opacity: 0.9; font-size: 1.1em; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .card h2 { font-size: 1.2em; margin-bottom: 15px; color: #667eea; border-bottom: 2px solid #667eea; padding-bottom: 8px; }
+        .metric { display: flex; justify-content: space-between; align-items: center; margin: 8px 0; padding: 8px 12px; background: #f8f9fa; border-radius: 6px; font-size: 0.9em; }
+        .metric-label { font-weight: 500; color: #666; }
+        .metric-value { font-weight: 700; }
+        .trend-up { color: #ff3b30; }
+        .trend-down { color: #34c759; }
+        .trend-stable { color: #007aff; }
+        .alert-red { background: #ffebee; border-left: 4px solid #f44336; }
+        .alert-yellow { background: #fff8e1; border-left: 4px solid #ffc107; }
+        .alert-green { background: #e8f5e9; border-left: 4px solid #4caf50; }
+        .month-row { display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid #eee; }
+        .month-name { width: 70px; font-weight: 500; }
+        .month-value { width: 80px; text-align: right; font-family: monospace; }
+        .month-bar { flex: 1; margin: 0 10px; }
+        .month-bar-fill { height: 20px; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
+        .month-dev { width: 70px; text-align: right; font-size: 0.85em; }
+        .month-trend { width: 30px; text-align: center; }
+        .month-status { width: 30px; text-align: center; }
+        .summary-box { background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%); padding: 15px; border-radius: 10px; margin: 15px 0; }
+        .legend { display: flex; gap: 20px; margin: 10px 0; font-size: 0.85em; }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .badge { padding: 2px 8px; border-radius: 12px; font-size: 0.75em; font-weight: 600; }
+        .badge-red { background: #ffebee; color: #c62828; }
+        .badge-yellow { background: #fff8e1; color: #f57f17; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .last-update { text-align: center; color: #666; margin-top: 30px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Dashboard V7 - Análise Detalhada</h1>
+            <p class="subtitle">Rubrica por Rubrica | Tendências | Desvios | N26 + Santander + Revolut</p>
+        </header>
+
+        <!-- ELETRICIDADE -->
+        <div class="card" style="margin-bottom: 20px;">
+            <h2>⚡ Eletricidade (SU Eletricidade)</h2>
+            <div class="summary-box">
+                <div style="display: flex; justify-content: space-between;">
+                    <span><strong>Média:</strong> €136.29</span>
+                    <span><strong>Pico:</strong> €164.36 (+20.6%)</span>
+                    <span><strong>Mínimo:</strong> €107.39</span>
+                    <span><strong>Variação:</strong> <span class="badge badge-red">53.0%</span></span>
+                </div>
+            </div>
+            <div class="month-row" style="font-weight: bold; background: #f5f5f5;">
+                <span class="month-name">Mês</span>
+                <span class="month-value">Valor</span>
+                <span class="month-bar">Gráfico</span>
+                <span class="month-dev">Desvio</span>
+                <span class="month-trend">📊</span>
+                <span class="month-status">⚠️</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Ago/25</span>
+                <span class="month-value">€130.24</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 79%"></span></span>
+                <span class="month-dev trend-stable">-4.4%</span>
+                <span class="month-trend">➡️</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Set/25</span>
+                <span class="month-value">€133.12</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 81%"></span></span>
+                <span class="month-dev trend-stable">-2.3%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Out/25</span>
+                <span class="month-value">€107.39</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 65%"></span></span>
+                <span class="month-dev trend-down">-21.2%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Nov/25</span>
+                <span class="month-value">€136.20</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 83%"></span></span>
+                <span class="month-dev trend-stable">-0.1%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row alert-red">
+                <span class="month-name">Dez/25</span>
+                <span class="month-value">€164.36</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 100%"></span></span>
+                <span class="month-dev trend-up">+20.6%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🔴</span>
+            </div>
+            <div class="month-row alert-yellow">
+                <span class="month-name">Jan/26</span>
+                <span class="month-value">€146.44</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 89%"></span></span>
+                <span class="month-dev trend-up">+7.4%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟡</span>
+            </div>
+            <div class="alert-red" style="margin-top: 15px; padding: 10px; border-radius: 8px;">
+                <strong>🚨 ALERTA:</strong> Pico em dezembro (+20.6% vs média). Possível erro de faturação ou consumo anormal. 
+                <strong>Recomendação:</strong> Verificar leitura do contador e negociar tarifa.
+            </div>
+        </div>
+
+        <!-- RESTAURACAO -->
+        <div class="card" style="margin-bottom: 20px;">
+            <h2>🍽️ Restauração</h2>
+            <div class="summary-box">
+                <div style="display: flex; justify-content: space-between;">
+                    <span><strong>Média:</strong> €247.30/mês</span>
+                    <span><strong>Pico:</strong> €334.81 (+35.4%)</span>
+                    <span><strong>Mínimo:</strong> €96.67</span>
+                    <span><strong>Meta:</strong> €150/mês</span>
+                </div>
+            </div>
+            <div class="month-row" style="font-weight: bold; background: #f5f5f5;">
+                <span class="month-name">Mês</span>
+                <span class="month-value">Valor</span>
+                <span class="month-bar">Gráfico</span>
+                <span class="month-dev">Desvio</span>
+                <span class="month-trend">📊</span>
+                <span class="month-status">⚠️</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Jul/25</span>
+                <span class="month-value">€287.67</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 86%"></span></span>
+                <span class="month-dev trend-up">+16.3%</span>
+                <span class="month-trend">➡️</span>
+                <span class="month-status">🟡</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Ago/25</span>
+                <span class="month-value">€171.02</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 51%"></span></span>
+                <span class="month-dev trend-down">-30.8%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Set/25</span>
+                <span class="month-value">€238.88</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 71%"></span></span>
+                <span class="month-dev trend-stable">-3.4%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row alert-red">
+                <span class="month-name">Out/25</span>
+                <span class="month-value">€334.81</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 100%"></span></span>
+                <span class="month-dev trend-up">+35.4%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🔴</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Nov/25</span>
+                <span class="month-value">€261.16</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 78%"></span></span>
+                <span class="month-dev trend-stable">+5.6%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row alert-yellow">
+                <span class="month-name">Dez/25</span>
+                <span class="month-value">€295.88</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 88%"></span></span>
+                <span class="month-dev trend-up">+19.6%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🟡</span>
+            </div>
+            <div class="month-row alert-yellow">
+                <span class="month-name">Jan/26</span>
+                <span class="month-value">€284.48</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 85%"></span></span>
+                <span class="month-dev trend-up">+15.0%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟡</span>
+            </div>
+            <div class="month-row alert-green">
+                <span class="month-name">Fev/26</span>
+                <span class="month-value">€96.67</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 29%"></span></span>
+                <span class="month-dev trend-down">-60.9%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="alert-yellow" style="margin-top: 15px; padding: 10px; border-radius: 8px;">
+                <strong>📊 ANÁLISE:</strong> Pico em outubro (€335) e dezembro (€296). Fev/26 mostra melhoria significativa (-61%). 
+                <strong>Previsão:</strong> Se mantiver €150/mês, poupança anual de €1,200.
+            </div>
+        </div>
+
+        <!-- SUBSCRICOES -->
+        <div class="card" style="margin-bottom: 20px;">
+            <h2>📱 Subscrições Digitais</h2>
+            <div class="summary-box">
+                <div style="display: flex; justify-content: space-between;">
+                    <span><strong>Média:</strong> €181.92/mês</span>
+                    <span><strong>Pico:</strong> €447.37 (+145.9%)</span>
+                    <span><strong>Meta:</strong> €130/mês</span>
+                </div>
+            </div>
+            <div class="month-row" style="font-weight: bold; background: #f5f5f5;">
+                <span class="month-name">Mês</span>
+                <span class="month-value">Valor</span>
+                <span class="month-bar">Gráfico</span>
+                <span class="month-dev">Desvio</span>
+                <span class="month-trend">📊</span>
+                <span class="month-status">⚠️</span>
+            </div>
+            <div class="month-row alert-red">
+                <span class="month-name">Set/25</span>
+                <span class="month-value">€447.37</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 100%"></span></span>
+                <span class="month-dev trend-up">+145.9%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🔴</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Out/25</span>
+                <span class="month-value">€187.66</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 42%"></span></span>
+                <span class="month-dev trend-stable">+3.2%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row alert-red">
+                <span class="month-name">Nov/25</span>
+                <span class="month-value">€313.72</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 70%"></span></span>
+                <span class="month-dev trend-up">+72.4%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🔴</span>
+            </div>
+            <div class="month-row">
+                <span class="month-name">Dez/25</span>
+                <span class="month-value">€164.65</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 37%"></span></span>
+                <span class="month-dev trend-stable">-9.5%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="month-row alert-yellow">
+                <span class="month-name">Jan/26</span>
+                <span class="month-value">€249.95</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 56%"></span></span>
+                <span class="month-dev trend-up">+37.4%</span>
+                <span class="month-trend">📈</span>
+                <span class="month-status">🟡</span>
+            </div>
+            <div class="month-row alert-green">
+                <span class="month-name">Fev/26</span>
+                <span class="month-value">€90.24</span>
+                <span class="month-bar"><span class="month-bar-fill" style="width: 20%"></span></span>
+                <span class="month-dev trend-down">-50.4%</span>
+                <span class="month-trend">📉</span>
+                <span class="month-status">🟢</span>
+            </div>
+            <div class="alert-red" style="margin-top: 15px; padding: 10px; border-radius: 8px;">
+                <strong>🚨 PICOS ANÔMALOS:</strong> Set/25 (€447) e Nov/25 (€314) - possíveis compras de apps/jogos ou renovações anuais. 
+                <strong>Ação:</strong> Auditar subscrições e identificar gastos pontuais.
+            </div>
+        </div>
+
+        <!-- LEGENDA -->
+        <div class="card" style="margin-bottom: 20px;">
+            <h2>📖 Legenda</h2>
+            <div class="legend">
+                <div class="legend-item"><span>📈</span> Aumento vs mês anterior</div>
+                <div class="legend-item"><span>📉</span> Diminuição vs mês anterior</div>
+                <div class="legend-item"><span>➡️</span> Estável</div>
+            </div>
+            <div class="legend">
+                <div class="legend-item"><span>🟢</span> Desvio &lt; 15% (normal)</div>
+                <div class="legend-item"><span>🟡</span> Desvio 15-30% (atenção)</div>
+                <div class="legend-item"><span>🔴</span> Desvio &gt; 30% (crítico)</div>
+            </div>
+        </div>
+
+        <!-- RESUMO EXECUTIVO -->
+        <div class="card" style="margin-bottom: 20px;">
+            <h2>🎯 Resumo Executivo - Tendências & Alertas</h2>
+            <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="alert-green" style="padding: 15px; border-radius: 8px;">
+                    <h3>✅ Positivo</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Restauração fev/26: -61% (€97 vs €247 média)</li>
+                        <li>Subscrições fev/26: -50% (€90 vs €182 média)</li>
+                        <li>Eletricidade jan/26: -11% vs dez/25</li>
+                    </ul>
+                </div>
+                <div class="alert-red" style="padding: 15px; border-radius: 8px;">
+                    <h3>⚠️ Atenção Necessária</h3>
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>Eletricidade dez/25: +20.6% (pico €164)</li>
+                        <li>Subscrições set/25: +146% (anômalo €447)</li>
+                        <li>Subscrições nov/25: +72% (€314)</li>
+                        <li>86% das despesas em "Outros" (€373k)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <p class="last-update">Dashboard V7 - Análise por Rubrica com Tendências | Última atualização: <span id="timestamp"></span></p>
+    </div>
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('pt-PT');
+    </script>
+</body>
+</html>

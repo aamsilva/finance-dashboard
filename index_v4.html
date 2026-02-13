@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Financeiro - Augusto & Sofia</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f7; color: #1d1d1f; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; }
+        h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .subtitle { opacity: 0.9; font-size: 1.1em; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .card h2 { font-size: 1.3em; margin-bottom: 15px; color: #667eea; }
+        .card h3 { font-size: 1.1em; margin: 20px 0 10px 0; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 8px; }
+        .metric { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; padding: 12px; background: #f8f9fa; border-radius: 10px; }
+        .metric-label { font-weight: 500; color: #666; font-size: 0.95em; }
+        .metric-value { font-size: 1.2em; font-weight: 700; color: #1d1d1f; }
+        .metric-detail { font-size: 0.85em; color: #888; margin-top: 4px; }
+        .positive { color: #34c759; }
+        .negative { color: #ff3b30; }
+        .warning { color: #ff9500; }
+        .info { color: #007aff; }
+        .alert-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .alert-danger { background: #f8d7da; border-left-color: #dc3545; }
+        .alert-info { background: #d1ecf1; border-left-color: #0c5460; }
+        .alert-success { background: #d4edda; border-left-color: #28a745; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { font-weight: 600; color: #667eea; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8em; font-weight: 500; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-info { background: #d1ecf1; color: #0c5460; }
+        .last-update { text-align: center; color: #666; margin-top: 30px; font-size: 0.9em; }
+        .chart-bar { background: #e9ecef; border-radius: 10px; height: 25px; margin: 8px 0; overflow: hidden; }
+        .chart-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 10px; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .highlight { background: linear-gradient(120deg, #f6f9fc 0%, #e9f2f9 100%); padding: 15px; border-radius: 12px; margin: 15px 0; }
+        .emoji-icon { font-size: 1.5em; margin-right: 8px; }
+        .bank-tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.7em; font-weight: 600; margin-left: 8px; }
+        .tag-n26 { background: #e3f2fd; color: #1976d2; }
+        .tag-santander { background: #fce4ec; color: #c2185b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Dashboard Financeiro</h1>
+            <p class="subtitle">Augusto & Sofia Silva | Consolidado N26 + Santander | Ago/2025 - Fev/2026</p>
+        </header>
+
+        <!-- RESUMO -->
+        <div class="grid">
+            <div class="card">
+                <h2>📊 Resumo Consolidado</h2>
+                <div class="metric">
+                    <span class="metric-label">Total Transações</span>
+                    <span class="metric-value">1,696</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Período</span>
+                    <span class="metric-value">7 meses</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Despesas</span>
+                    <span class="metric-value negative">€ -422,351</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Rendimentos</span>
+                    <span class="metric-value positive">€ 517,023</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Saldo</span>
+                    <span class="metric-value positive">€ 94,672</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🏦 Origem dos Dados</h2>
+                <div class="metric">
+                    <span class="metric-label">📱 N26</span>
+                    <span class="metric-value">1,380 txs</span>
+                    <div class="metric-detail">Jan/25 - Fev/26 (14 meses)</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">🏦 Santander</span>
+                    <span class="metric-value">316 txs</span>
+                    <div class="metric-detail">Ago/25 - Jan/26 (6 meses)</div>
+                </div>
+                <div class="alert-info" style="margin-top: 15px;">
+                    <strong>Próximo:</strong> Revolut (a adicionar)
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>⚡ Utilities (6 meses)</h2>
+                <div class="metric">
+                    <span class="metric-label">Eletricidade <span class="bank-tag tag-santander">Santander</span></span>
+                    <span class="metric-value negative">€ 818</span>
+                    <div class="metric-detail">Média: €136/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Água (EPAL) <span class="bank-tag tag-santander">Santander</span></span>
+                    <span class="metric-value negative">€ 132</span>
+                    <div class="metric-detail">Média: €22/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Gás (Lisboagás) <span class="bank-tag tag-santander">Santander</span></span>
+                    <span class="metric-value negative">€ 185</span>
+                    <div class="metric-detail">Média: €31/mês</div>
+                </div>
+                <div class="alert-box" style="margin-top: 15px;">
+                    <strong>Total Utilities:</strong> € 1,135 (€189/mês)
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBSCRICOES -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2>📱 Subscrições Digitais <span class="bank-tag tag-n26">N26</span></h2>
+            <div class="three-col">
+                <div class="metric">
+                    <span class="metric-label">Apple/iTunes</span>
+                    <span class="metric-value negative">€ 1,194</span>
+                    <div class="metric-detail">€85/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">YouTube/Google</span>
+                    <span class="metric-value negative">€ 547</span>
+                    <div class="metric-detail">€39/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Kobo</span>
+                    <span class="metric-value negative">€ 263</span>
+                    <div class="metric-detail">€20/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Netflix</span>
+                    <span class="metric-value negative">€ 160</span>
+                    <div class="metric-detail">€20/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Disney+</span>
+                    <span class="metric-value negative">€ 160</span>
+                    <div class="metric-detail">€15/mês</div>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Spotify</span>
+                    <span class="metric-value negative">€ 144</span>
+                    <div class="metric-detail">€16/mês</div>
+                </div>
+            </div>
+            <div class="alert-box" style="margin-top: 20px; text-align: center;">
+                <strong>Total Subscrições:</strong> € 2,468/ano (€176/mês) - Verificar auditoria!
+            </div>
+        </div>
+
+        <!-- TRANSPORTE -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2>🚗 Transporte <span class="bank-tag tag-n26">N26</span></h2>
+            <div class="highlight">
+                <div class="three-col">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; margin-bottom: 10px;">🚕</div>
+                        <div style="font-size: 1.8em; font-weight: bold; color: #ff3b30;">€ 1,867</div>
+                        <div style="color: #666;">Uber (148 viagens)</div>
+                        <div style="color: #888; font-size: 0.9em;">74% | Média €13/viagem</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; margin-bottom: 10px;">⚡</div>
+                        <div style="font-size: 1.8em; font-weight: bold; color: #ff3b30;">€ 524</div>
+                        <div style="color: #666;">Bolt (45 viagens)</div>
+                        <div style="color: #888; font-size: 0.9em;">21% | Média €12/viagem</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2em; margin-bottom: 10px;">🚌</div>
+                        <div style="font-size: 1.8em; font-weight: bold; color: #ff3b30;">€ 147</div>
+                        <div style="color: #666;">Outros</div>
+                        <div style="color: #888; font-size: 0.9em;">5% | EMEL, Carris</div>
+                    </div>
+                </div>
+            </div>
+            <div class="metric" style="margin-top: 20px;">
+                <span class="metric-label">Total Transporte</span>
+                <span class="metric-value negative">€ 2,538</span>
+                <div class="metric-detail">Média: €181/mês</div>
+            </div>
+        </div>
+
+        <!-- TOP CATEGORIAS -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2>📈 Top Categorias de Despesa (Consolidado)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Valor</th>
+                        <th>Banco Principal</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Outros</td>
+                        <td class="negative">€ -370,084</td>
+                        <td><span class="bank-tag tag-n26">N26</span></td>
+                        <td><span class="badge badge-warning">Detalhar</span></td>
+                    </tr>
+                    <tr>
+                        <td>Finance</td>
+                        <td class="negative">€ -16,665</td>
+                        <td><span class="bank-tag tag-n26">N26</span></td>
+                        <td><span class="badge badge-info">Verificar</span></td>
+                    </tr>
+                    <tr>
+                        <td>Cartão Crédito</td>
+                        <td class="negative">€ -13,151</td>
+                        <td><span class="bank-tag tag-santander">Santander</span></td>
+                        <td><span class="badge badge-warning">Monitorizar</span></td>
+                    </tr>
+                    <tr>
+                        <td>Restauração</td>
+                        <td class="negative">€ -3,262</td>
+                        <td><span class="bank-tag tag-n26">N26</span></td>
+                        <td><span class="badge badge-success">OK</span></td>
+                    </tr>
+                    <tr>
+                        <td>Despesas Fixas</td>
+                        <td class="negative">€ -3,855</td>
+                        <td><span class="bank-tag tag-santander">Santander</span></td>
+                        <td><span class="badge badge-success">Normal</span></td>
+                    </tr>
+                    <tr>
+                        <td>Subscrições</td>
+                        <td class="negative">€ -2,547</td>
+                        <td><span class="bank-tag tag-n26">N26</span></td>
+                        <td><span class="badge badge-warning">Auditar</span></td>
+                    </tr>
+                    <tr>
+                        <td>Transporte</td>
+                        <td class="negative">€ -2,538</td>
+                        <td><span class="bank-tag tag-n26">N26</span></td>
+                        <td><span class="badge badge-warning">Alto</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TRANSFERENCIAS -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2>🔄 Transferências N26 → Santander (Eliminadas na consolidação)</h2>
+            <div class="two-col">
+                <div>
+                    <table>
+                        <thead>
+                            <tr><th>Data</th><th>Valor</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2025-08-01</td><td class="positive">€ 2,000</td></tr>
+                            <tr><td>2025-09-12</td><td class="positive">€ 2,000</td></tr>
+                            <tr><td>2025-10-01</td><td class="positive">€ 2,000</td></tr>
+                            <tr><td>2025-11-14</td><td class="positive">€ 2,000</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr><th>Data</th><th>Valor</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2025-12-15</td><td class="positive">€ 2,000</td></tr>
+                            <tr><td>2025-12-31</td><td class="positive">€ 2,000</td></tr>
+                            <tr><td>2026-01-09</td><td class="positive">€ 2,000</td></tr>
+                            <tr style="font-weight: bold; background: #f8f9fa;">
+                                <td>Total</td><td class="positive">€ 14,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <p class="last-update">Última atualização: <span id="timestamp"></span> | Dashboard V4 - Consolidado N26 + Santander</p>
+    </div>
+    <script>
+        document.getElementById('timestamp').textContent = new Date().toLocaleString('pt-PT');
+    </script>
+</body>
+</html>
