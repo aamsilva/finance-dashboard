@@ -1,167 +1,142 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌍 Travel Detector - Análise de Viagens</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f7; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 30px; border-radius: 20px; margin-bottom: 30px; }
-        h1 { font-size: 2.2em; margin-bottom: 10px; }
-        .subtitle { opacity: 0.9; }
-        .back { display: inline-block; margin-bottom: 20px; color: #667eea; text-decoration: none; background: white; padding: 10px 20px; border-radius: 10px; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
-        .stat-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-        .stat-value { font-size: 2em; font-weight: bold; color: #11998e; }
-        .stat-label { color: #666; margin-top: 5px; }
-        
-        .trip-card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-        .trip-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
-        .trip-title { font-size: 1.4em; color: #333; }
-        .trip-date { color: #666; font-size: 0.9em; }
-        .trip-total { font-size: 1.8em; font-weight: bold; color: #11998e; }
-        
-        .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .category-item { background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: center; }
-        .category-icon { font-size: 1.5em; margin-bottom: 5px; }
-        .category-name { font-size: 0.8em; color: #666; text-transform: uppercase; }
-        .category-value { font-size: 1.2em; font-weight: bold; color: #333; margin-top: 3px; }
-        
-        .legend { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
-        .legend h3 { margin-bottom: 15px; color: #333; }
-        .legend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-        .legend-item { display: flex; align-items: center; gap: 8px; }
-        .legend-icon { font-size: 1.2em; }
-    </style>
+<meta charset="UTF-8">
+<title>Travel Detector</title>
+<style>
+body{font-family:-apple-system,sans-serif;background:#f5f5f7;padding:20px;margin:0}
+.container{max-width:1200px;margin:0 auto}
+header{background:linear-gradient(135deg,#11998e,#38ef7d);color:white;padding:30px;border-radius:20px;margin-bottom:30px}
+.back{display:inline-block;margin-bottom:20px;color:#667eea;background:white;padding:10px 20px;border-radius:10px;text-decoration:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:30px}
+.stat{background:white;padding:20px;border-radius:15px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+.stat-value{font-size:2em;font-weight:bold;color:#11998e}
+.trip{background:white;border-radius:20px;padding:25px;margin-bottom:25px;box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.trip-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;padding-bottom:15px;border-bottom:2px solid #f0f0f0}
+.trip-route{color:#11998e;font-weight:500;margin:5px 0;font-size:.95em}
+.trip-total{font-size:1.8em;font-weight:bold;color:#11998e}
+.categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin:15px 0}
+.cat{background:#f8f9fa;padding:12px;border-radius:10px;text-align:center;cursor:pointer}
+.cat:hover{background:#e8f5e9}
+.tx-list{display:none;margin-top:15px}
+.tx-item{display:flex;align-items:center;padding:10px;background:#f8f9fa;border-radius:8px;margin-bottom:6px}
+.tx-icon{width:35px;text-align:center;font-size:1.2em}
+.tx-info{flex:1;margin-left:10px}
+.tx-date{font-size:.75em;color:#666}
+.tx-desc{font-size:.9em;color:#333}
+.tx-loc{font-size:.7em;color:#11998e;font-weight:500}
+.tx-val{font-weight:bold;color:#ff3b30}
+.btn{background:#11998e;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer}
+.route-tag{background:#e8f5e9;color:#11998e;padding:2px 8px;border-radius:10px;font-size:.75em;margin-right:3px}
+</style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back">← Voltar ao Dashboard</a>
-        
-        <header>
-            <h1>🌍 Travel Detector</h1>
-            <p class="subtitle">Análise automática de despesas de viagem por viagem</p>
-        </header>
+<div class="container">
+<a href="index.html" class="back">← Voltar</a>
+<header><h1>🌍 Travel Detector</h1><p>Análise de viagens com origem/destino</p></header>
+<div class="stats">
+<div class="stat"><div class="stat-value">5</div><div>Viagens</div></div>
+<div class="stat"><div class="stat-value">€3,005</div><div>Total</div></div>
+<div class="stat"><div class="stat-value">47</div><div>Transações</div></div>
+<div class="stat"><div class="stat-value">18</div><div>Voos/Hoteis</div></div>
+</div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">5</div>
-                <div class="stat-label">Viagens Detetadas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">€3,005</div>
-                <div class="stat-label">Total em Viagens</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">47</div>
-                <div class="stat-label">Transações</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">18</div>
-                <div class="stat-label">Voos/Hoteis</div>
-            </div>
-        </div>
+<div class="trip">
+<div class="trip-header">
+<div>
+<h2>✈️ Viagem #1 - Jan/Fev 2025 (Dublin/Viena/Porto)</h2>
+<div class="trip-route"><span class="route-tag">🛫LIS</span>→<span class="route-tag">DUB</span>→<span class="route-tag">VIE</span>→<span class="route-tag">OPO</span>→<span class="route-tag">🛬LIS</span></div>
+<small>📅 2025-01-05 a 2025-02-14 | 13 transações</small>
+</div>
+<div class="trip-total">€907</div>
+</div>
+<div class="categories">
+<div class="cat" onclick="t(1)"><div>✈️</div><div><b>€579</b></div><div><small>6 voos</small></div></div>
+<div class="cat" onclick="t(1)"><div>🏨</div><div><b>€82</b></div><div><small>Hotéis</small></div></div>
+<div class="cat" onclick="t(1)"><div>🚕</div><div><b>€65</b></div><div><small>4 trips</small></div></div>
+<div class="cat" onclick="t(1)"><div>🍽️</div><div><b>€181</b></div><div><small>Refeições</small></div></div>
+</div>
+<button class="btn" onclick="t(1)">📋 Ver Transações</button>
+<div id="t1" class="tx-list">
+<div class="tx-item"><div class="tx-icon">✈️</div><div class="tx-info"><div class="tx-date">2025-01-07</div><div class="tx-desc">Ryanair</div><div class="tx-loc">🛫 Lisboa (LIS) → 🛬 Dublin (DUB)</div></div><div class="tx-val">€91.18</div></div>
+<div class="tx-item"><div class="tx-icon">✈️</div><div class="tx-info"><div class="tx-date">2025-01-12</div><div class="tx-desc">Ryanair</div><div class="tx-loc">🛫 Dublin (DUB) → 🛬 Lisboa (LIS)</div></div><div class="tx-val">€42.12</div></div>
+<div class="tx-item"><div class="tx-icon">🏨</div><div class="tx-info"><div class="tx-date">2025-01-24</div><div class="tx-desc">Hotel Doppio Wien</div><div class="tx-loc">📍 Viena, Áustria 🇦🇹</div></div><div class="tx-val">€18.20</div></div>
+<div class="tx-item"><div class="tx-icon">🏨</div><div class="tx-info"><div class="tx-date">2025-02-03</div><div class="tx-desc">Hotel Jaguar Porto</div><div class="tx-loc">📍 Porto, Portugal 🇵🇹</div></div><div class="tx-val">€64.00</div></div>
+<div class="tx-item"><div class="tx-icon">🚕</div><div class="tx-info"><div class="tx-date">2025-01-07</div><div class="tx-desc">Uber - Aeroporto</div><div class="tx-loc">📍 Lisboa → Aeroporto (LIS)</div></div><div class="tx-val">€7.32</div></div>
+<div class="tx-item"><div class="tx-icon">🍽️</div><div class="tx-info"><div class="tx-date">2025-01-06</div><div class="tx-desc">Glovo - Refeição</div><div class="tx-loc">📍 Lisboa</div></div><div class="tx-val">€180.76</div></div>
+</div>
+</div>
 
-        <div class="legend">
-            <h3>📋 Categorias de Viagem</h3>
-            <div class="legend-grid">
-                <div class="legend-item"><span class="legend-icon">✈️</span> Flight (Voo)</div>
-                <div class="legend-item"><span class="legend-icon">🏨</span> Hotel</div>
-                <div class="legend-item"><span class="legend-icon">🚗</span> Car Rental</div>
-                <div class="legend-item"><span class="legend-icon">🚕</span> Transporte Local</div>
-                <div class="legend-item"><span class="legend-icon">🍽️</span> Refeições</div>
-                <div class="legend-item"><span class="legend-icon">📱</span> eSIM/Internet</div>
-                <div class="legend-item"><span class="legend-icon">🎯</span> Atividades</div>
-            </div>
-        </div>
+<div class="trip">
+<div class="trip-header">
+<div>
+<h2>✈️ Viagem #2 - Março 2025</h2>
+<div class="trip-route"><span class="route-tag">🛫LIS</span>→<span class="route-tag">???</span>→<span class="route-tag">🛬LIS</span></div>
+<small>📅 2025-03-10 a 2025-03-18 | 9 transações</small>
+</div>
+<div class="trip-total">€443</div>
+</div>
+<div class="categories">
+<div class="cat" onclick="t(2)"><div>✈️</div><div><b>€142</b></div><div><small>2 voos</small></div></div>
+<div class="cat" onclick="t(2)"><div>🚕</div><div><b>€58</b></div><div><small>3 trips</small></div></div>
+<div class="cat" onclick="t(2)"><div>🍽️</div><div><b>€243</b></div><div><small>4 refeições</small></div></div>
+</div>
+<button class="btn" onclick="t(2)">📋 Ver Transações</button>
+<div id="t2" class="tx-list">
+<div class="tx-item"><div class="tx-icon">✈️</div><div class="tx-info"><div class="tx-date">2025-03-12</div><div class="tx-desc">Ryanair</div><div class="tx-loc">🛫 Lisboa (LIS)</div></div><div class="tx-val">€99.87</div></div>
+<div class="tx-item"><div class="tx-icon">✈️</div><div class="tx-info"><div class="tx-date">2025-03-16</div><div class="tx-desc">Ryanair</div><div class="tx-loc">🛬 Lisboa (LIS)</div></div><div class="tx-val">€42.12</div></div>
+</div>
+</div>
 
-        <!-- VIAGEM 1 -->
-        <div class="trip-card">
-            <div class="trip-header">
-                <div>
-                    <div class="trip-title">✈️ Viagem #1 - Janeiro/Fevereiro 2025</div>
-                    <div class="trip-date">2025-01-05 a 2025-02-14 | 8 voos/hoteis</div>
-                </div>
-                <div class="trip-total">€907.08</div>
-            </div>
-            <div class="categories-grid">
-                <div class="category-item"><div class="category-icon">✈️</div><div class="category-name">Flight</div><div class="category-value">€579.26</div></div>
-                <div class="category-item"><div class="category-icon">🏨</div><div class="category-name">Hotel</div><div class="category-value">€82.20</div></div>
-                <div class="category-item"><div class="category-icon">🚕</div><div class="category-name">Transporte</div><div class="category-value">€64.86</div></div>
-                <div class="category-item"><div class="category-icon">🍽️</div><div class="category-name">Refeições</div><div class="category-value">€180.76</div></div>
-            </div>
-        </div>
+<div class="trip">
+<div class="trip-header">
+<div>
+<h2>✈️ Viagem #3 - Maio 2025 (Viena)</h2>
+<div class="trip-route"><span class="route-tag">🛫LIS</span>→<span class="route-tag">VIE</span>→<span class="route-tag">🛬LIS</span></div>
+<small>📅 2025-05-12 a 2025-05-16 | 10 transações</small>
+</div>
+<div class="trip-total">€249</div>
+</div>
+<div class="categories">
+<div class="cat" onclick="t(3)"><div>🏨</div><div><b>€3</b></div><div><small>Hotel</small></div></div>
+<div class="cat" onclick="t(3)"><div>🚕</div><div><b>€120</b></div><div><small>6 trips</small></div></div>
+<div class="cat" onclick="t(3)"><div>🍽️</div><div><b>€127</b></div><div><small>3 refeições</small></div></div>
+</div>
+<button class="btn" onclick="t(3)">📋 Ver Transações</button>
+<div id="t3" class="tx-list">
+<div class="tx-item"><div class="tx-icon">🏨</div><div class="tx-info"><div class="tx-date">2025-05-14</div><div class="tx-desc">Hotel Doppio Wien</div><div class="tx-loc">📍 Viena, Áustria 🇦🇹</div></div><div class="tx-val">€3.10</div></div>
+</div>
+</div>
 
-        <!-- VIAGEM 2 -->
-        <div class="trip-card">
-            <div class="trip-header">
-                <div>
-                    <div class="trip-title">✈️ Viagem #2 - Março 2025</div>
-                    <div class="trip-date">2025-03-10 a 2025-03-18 | 2 voos/hoteis</div>
-                </div>
-                <div class="trip-total">€443.19</div>
-            </div>
-            <div class="categories-grid">
-                <div class="category-item"><div class="category-icon">✈️</div><div class="category-name">Flight</div><div class="category-value">€141.99</div></div>
-                <div class="category-item"><div class="category-icon">🚕</div><div class="category-name">Transporte</div><div class="category-value">€57.78</div></div>
-                <div class="category-item"><div class="category-icon">🍽️</div><div class="category-name">Refeições</div><div class="category-value">€243.42</div></div>
-            </div>
-        </div>
+<div class="trip">
+<div class="trip-header">
+<div>
+<h2>✈️ Viagem #5 - Jan/Fev 2026 (EasyJet + KLM)</h2>
+<div class="trip-route"><span class="route-tag">🛫LIS</span>→<span class="route-tag">???</span>→<span class="route-tag">???</span>→<span class="route-tag">🛬LIS</span></div>
+<small>📅 2026-01-22 a 2026-02-09 | 11 transações</small>
+</div>
+<div class="trip-total">€1,271</div>
+</div>
+<div class="categories">
+<divclass="cat" onclick="t(5)"><div>✈️</div><div><b>€700</b></div><div><small>EasyJet/KLM</small></div></div>
+<div class="cat" onclick="t(5)"><div>🏨</div><div><b>€505</b></div><div><small>Booking.com</small></div></div>
+<div class="cat" onclick="t(5)"><div>🚕</div><div><b>€65</b></div><div><small>6 trips</small></div></div>
+</div>
+<button class="btn" onclick="t(5)">📋 Ver Transações</button>
+<div id="t5" class="tx-list">
+<div class="tx-item"><div class="tx-icon">✈️</div><div class="tx-info"><div class="tx-date">2026-01-24</div><div class="tx-desc">EasyJet</div><div class="tx-loc">🛫 Lisboa (LIS)</div></div><div class="tx-val">€465.78</div></div>
+<div class="tx-item"><div class="tx-icon">✈️</div><div class="tx-info"><div class="tx-date">2026-02-07</div><div class="tx-desc">KLM - Y9IBSP</div><div class="tx-loc">🛫 ??? → 🛬 Lisboa (LIS)</div></div><div class="tx-val">€175.39</div></div>
+<div class="tx-item"><div class="tx-icon">🏨</div><div class="tx-info"><div class="tx-date">2026-02-05</div><div class="tx-desc">Hotel Booking.com</div><div class="tx-loc">📍 Destino da viagem</div></div><div class="tx-val">€277.70</div></div>
+<div class="tx-item"><div class="tx-icon">🏨</div><div class="tx-info"><div class="tx-date">2026-02-05</div><div class="tx-desc">Hotel Booking.com</div><div class="tx-loc">📍 Destino da viagem</div></div><div class="tx-val">€227.15</div></div>
+</div>
+</div>
 
-        <!-- VIAGEM 3 -->
-        <div class="trip-card">
-            <div class="trip-header">
-                <div>
-                    <div class="trip-title">✈️ Viagem #3 - Maio 2025</div>
-                    <div class="trip-date">2025-05-12 a 2025-05-16 | 1 hotel</div>
-                </div>
-                <div class="trip-total">€249.19</div>
-            </div>
-            <div class="categories-grid">
-                <div class="category-item"><div class="category-icon">🏨</div><div class="category-name">Hotel</div><div class="category-value">€3.10</div></div>
-                <div class="category-item"><div class="category-icon">🚕</div><div class="category-name">Transporte</div><div class="category-value">€119.50</div></div>
-                <div class="category-item"><div class="category-icon">🍽️</div><div class="category-name">Refeições</div><div class="category-value">€126.59</div></div>
-            </div>
-        </div>
-
-        <!-- VIAGEM 4 -->
-        <div class="trip-card">
-            <div class="trip-header">
-                <div>
-                    <div class="trip-title">✈️ Viagem #4 - Junho 2025</div>
-                    <div class="trip-date">2025-06-14 a 2025-06-18 | 2 hoteis</div>
-                </div>
-                <div class="trip-total">€135.56</div>
-            </div>
-            <div class="categories-grid">
-                <div class="category-item"><div class="category-icon">🏨</div><div class="category-name">Hotel</div><div class="category-value">€115.30</div></div>
-                <div class="category-item"><div class="category-icon">🚕</div><div class="category-name">Transporte</div><div class="category-value">€14.27</div></div>
-                <div class="category-item"><div class="category-icon">🍽️</div><div class="category-name">Refeições</div><div class="category-value">€5.99</div></div>
-            </div>
-        </div>
-
-        <!-- VIAGEM 5 -->
-        <div class="trip-card">
-            <div class="trip-header">
-                <div>
-                    <div class="trip-title">✈️ Viagem #5 - Janeiro/Fevereiro 2026</div>
-                    <div class="trip-date">2026-01-22 a 2026-02-09 | 5 voos/hoteis</div>
-                </div>
-                <div class="trip-total">€1,270.63</div>
-            </div>
-            <div class="categories-grid">
-                <div class="category-item"><div class="category-icon">✈️</div><div class="category-name">Flight</div><div class="category-value">€700.38</div></div>
-                <div class="category-item"><div class="category-icon">🏨</div><div class="category-name">Hotel</div><div class="category-value">€504.85</div></div>
-                <div class="category-item"><div class="category-icon">🚕</div><div class="category-name">Transporte</div><div class="category-value">€65.40</div></div>
-            </div>
-        </div>
-
-        <div style="text-align: center; padding: 20px; color: #666;">
-            <p>Travel Detector v2 | Dados atualizados automaticamente</p>
-        </div>
-    </div>
+</div>
+<script>
+function t(n) {
+  var el = document.getElementById('t'+n);
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+</script>
 </body>
 </html>
